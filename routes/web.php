@@ -24,22 +24,45 @@ use Illuminate\Http\Request;
 //         'as' => 'signup'
 //     ]);
 // });
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+// ----------------------optimize and used Route::controller group-------->
+Route::controller(UserController::class)->group(function () {
+    Route::post('/signup',  'postSingUp')->name('signup');
+    Route::post('/signin',  'postSingIn')->name('signin');
+    Route::get('/logout', 'getLogout')->name('logout');
+    Route::get('/account',  'getAccount')->name('account');
+    Route::post('/updateaccount',  'postSaveAccount')->name('account.save');
 
-Route::post('/signup', [
-    UserController::class, 'postSingUp'
-])->name('signup');
+    Route::get('/userimage/{filename}', 'getUserImage')->name('account.image');
+});
 
-Route::post('/signin', [
-    UserController::class, 'postSingIn'
-])->name('signin');
+// Route::post('/signup', [
+//     UserController::class, 'postSingUp'
+// ])->name('signup');
 
-Route::get('/logout', [
-    UserController::class, 'getLogout'
-])->name('logout');
+// Route::post('/signin', [
+//     UserController::class, 'postSingIn'
+// ])->name('signin');
 
+// Route::get('/logout', [
+//     UserController::class, 'getLogout'
+// ])->name('logout');
+
+// Route::get('/account', [
+//     UserController::class, 'getAccount'
+// ])->name('account');
+
+// Route::post('/updateaccount', [
+//     UserController::class, 'postSaveAccount'
+// ])->name('account.save');
+
+// Route::get('/userimage/{filename}', [
+//     UserController::class, 'getUserImage'
+// ])->name('account.image');
+// ---------------------- end optimize and used Route::controller group-------->
 Route::get('/dashboard', [
     PostController::class, 'getDashboard'
 ])->name('dashboard')
@@ -58,17 +81,7 @@ Route::post('/edit', [
     PostController::class, 'postEditPost'
 ])->name('edit');
 
-Route::get('/account', [
-    UserController::class, 'getAccount'
-])->name('account');
 
-Route::post('/updateaccount', [
-    UserController::class, 'postSaveAccount'
-])->name('account.save');
-
-Route::get('/userimage/{filename}', [
-    UserController::class, 'getUserImage'
-])->name('account.image');
 Route::post('/like', [
     PostController::class, 'postLikePost'
 ])->name('like');
